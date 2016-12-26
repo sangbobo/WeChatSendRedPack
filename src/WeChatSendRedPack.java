@@ -20,9 +20,10 @@ import java.util.TreeMap;
 public class WeChatSendRedPack {
 
 
-
     public static void main(String[] args) throws Exception {
 
+
+        //具体参数查看具体实体类，实体类中的的参数参考微信的红包发放接口，这里你直接用map，进行设置参数也可以。。。
         SendRedPack sendRedPack = new SendRedPack(
                 "随机字符串不超过32位",
                 "随机订单号，不超过32位",
@@ -51,6 +52,7 @@ public class WeChatSendRedPack {
         TreeMap treeMap = new TreeMap(Tool.toMap(sendRedPack));
         //然后转换成xml格式
         String soapRequestData = Tool.getSoapRequestData(treeMap);
+        //发起请求前准备
         RequestBody body = RequestBody.create(MediaType.parse("text/xml;charset=UTF-8"), soapRequestData);
         Request request = new Request.Builder()
                 .url("https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack")
@@ -65,12 +67,11 @@ public class WeChatSendRedPack {
         String content = response.body().string();
         System.out.println(content);
 
-
     }
 
 
     public static SSLContext getSSL() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException, UnrecoverableKeyException, KeyManagementException {
-        KeyStore keyStore  = KeyStore.getInstance("PKCS12");
+        KeyStore keyStore = KeyStore.getInstance("PKCS12");
         //证书位置自己定义
         FileInputStream instream = new FileInputStream(new File("D:/soft/apiclient_cert.p12"));
         try {
